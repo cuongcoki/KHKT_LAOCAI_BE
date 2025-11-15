@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.IO Test Client</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+    .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+    button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    input { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
+    #logs { background: #1e1e1e; color: #00ff00; padding: 15px; border-radius: 4px; height: 400px; overflow-y: auto; font-family: 'Courier New'; }
+    .success { color: #00ff00; }
+    .error { color: #ff0000; }
+    .info { color: #00bfff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔌 Socket.IO Test Client</h1>
+    
+    <div>
+      <h3>Connection Status: <span id="status">Disconnected</span></h3>
+      <button onclick="connect()">Connect</button>
+      <button onclick="disconnect()">Disconnect</button>
+    </div>
+
+    <hr>
+
+    <div>
+      <h3>Join Room</h3>
+      <input type="text" id="roomId" placeholder="Room ID (e.g., class-123)">
+      <button onclick="joinRoom()">Join Room</button>
+    </div>
+
+    <div>
+      <h3>Send Message to Room</h3>
+      <input type="text" id="messageRoomId" placeholder="Room ID">
+      <input type="text" id="message" placeholder="Your message">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <hr>
+
+    <h3>Logs:</h3>
+    <div id="logs"></div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+  <script>
+    let socket = null;
+
+    function log(message, type = 'info') {
+      const logs = document.getElementById('logs');
+      const time = new Date().toLocaleTimeString();
+      logs.innerHTML += `<div class="${type}">[${time}] ${message}</div>`;
+      logs.scrollTop = logs.scrollHeight;
+    }
+
+    function updateStatus(status) {
+      document.getElementById('status').textContent = status;
+    }
+
+    function connect() {
+      if (socket?.connected) {
+        log('Already connected!', 'info');
+        return;
+      }
+
+      socket = io('http://localhost:3000', {
+        auth: {
+          token: 'test-token-123'
+        }
+      });
+
+      socket.on('connect', () => {
+        log(`✅ Connected! Socket ID: ${socket.id}`, 'success');
+        updateStatus('Connected');
+      });
+
+      socket.on('disconnect', (reason) => {
+        log(`❌ Disconnected: ${reason}`, 'error');
+        updateStatus('Disconnected');
+      });
+
+      socket.on('notification', (data) => {
+        log(`📬 Notification: ${JSON.stringify(data)}`, 'info');
+      });
+
+      socket.on('chat-message', (data) => {
+        log(`💬 Chat message: ${JSON.stringify(data)}`, 'info');
+      });
+
+      socket.on('user-joined', (data) => {
+        log(`👤 User joined: ${data.socketId}`, 'success');
+      });
+
+      socket.on('user-left', (data) => {
+        log(`👋 User left: ${data.socketId}`, 'error');
+      });
+
+      socket.on('error', (error) => {
+        log(`❌ Error: ${error}`, 'error');
+      });
+    }
+
+    function disconnect() {
+      if (socket) {
+        socket.disconnect();
+        log('Disconnecting...', 'info');
+      }
+    }
+
+    function joinRoom() {
+      const roomId = document.getElementById('roomId').value;
+      if (!roomId) {
+        alert('Please enter room ID');
+        return;
+      }
+      if (!socket?.connected) {
+        alert('Please connect first');
+        return;
+      }
+
+      socket.emit('join-room', roomId);
+      log(`🚪 Joining room: ${roomId}`, 'info');
+    }
+
+    function sendMessage() {
+      const roomId = document.getElementById('messageRoomId').value;
+      const message = document.getElementById('message').value;
+      
+      if (!roomId || !message) {
+        alert('Please enter both room ID and message');
+        return;
+      }
+      if (!socket?.connected) {
+        alert('Please connect first');
+        return;
+      }
+
+      socket.emit('chat-message', { roomId, message });
+      log(`📤 Sent message to ${roomId}: ${message}`, 'info');
+    }
+
+    // Auto connect on load
+    window.onload = () => {
+      log('Socket.IO Test Client loaded', 'success');
+      log('Click "Connect" to start', 'info');
+    };
+  </script>
+</body>
+</html>
