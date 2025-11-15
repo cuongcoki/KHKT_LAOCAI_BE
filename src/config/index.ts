@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 // Load biến môi trường từ file .env
 dotenv.config();
 
+
 /**
  * Cấu hình toàn bộ ứng dụng
  */
@@ -29,7 +30,11 @@ const config = {
     'http://localhost:3000',
     'http://localhost:5173',
     'http://localhost:5174',
+    'http://14.225.211.7:8333'
+
   ],
+
+  HOST: process.env.HOST  || '0.0.0.0',
 
   // ========================================
   // LOGGING CONFIG

@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const authRoutes_1 = __importDefault(require("./authRoutes"));
+const teacherRoutes_1 = __importDefault(require("./teacherRoutes"));
+const studentRoutes_1 = __importDefault(require("./studentRoutes"));
+const classRoutes_1 = __importDefault(require("./classRoutes"));
+const subjectRoutes_1 = __importDefault(require("./subjectRoutes"));
+const documentRoutes_1 = __importDefault(require("./documentRoutes"));
+const enrollmentRoutes_1 = __importDefault(require("./enrollmentRoutes"));
+const notificationRoutes_1 = __importDefault(require("./notificationRoutes"));
+const privateRouter = (0, express_1.Router)();
+privateRouter.use("/auth", authRoutes_1.default);
+privateRouter.use("/teachers", teacherRoutes_1.default);
+privateRouter.use("/students", studentRoutes_1.default);
+privateRouter.use("/classes", classRoutes_1.default);
+privateRouter.use("/subjects", subjectRoutes_1.default);
+privateRouter.use("/documents", documentRoutes_1.default);
+privateRouter.use("/enrollments", enrollmentRoutes_1.default);
+privateRouter.use("/notifications", notificationRoutes_1.default);
+exports.default = privateRouter;
