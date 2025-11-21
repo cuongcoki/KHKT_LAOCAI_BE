@@ -6,6 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import compression from "compression";
 import helmet from "helmet";
+import path from "path";
 
 /**
  * Config & Helpers
@@ -88,6 +89,13 @@ const configApp = (app: Express): void => {
 
   // Giới hạn số lượng request để tránh spam và DDoS
   app.use(limiter);
+
+  // ========================================
+  // STATIC FILES - UPLOAD FOLDER
+  // ========================================
+
+  // Serve static files từ folder upload
+  app.use('/upload', express.static(path.join(__dirname, '../upload')));
 
   // ========================================
   // LOGGING

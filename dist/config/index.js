@@ -23,7 +23,7 @@ const config = {
     defaultResOffset: 0,
     JWT_ACCESS_SECRET: (0, getEnvVar_1.default)('JWT_ACCESS_SECRET', 'default-access-secret-change-in-production'),
     JWT_REFRESH_SECRET: (0, getEnvVar_1.default)('JWT_REFRESH_SECRET', 'default-refresh-secret-change-in-production'),
-    JWT_ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE || '15m',
+    JWT_ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE || '1d',
     JWT_REFRESH_EXPIRE: process.env.JWT_REFRESH_EXPIRE || '7d',
     EMAIL_HOST: process.env.EMAIL_HOST || 'smtp.gmail.com',
     EMAIL_PORT: Number(process.env.EMAIL_PORT) || 587,

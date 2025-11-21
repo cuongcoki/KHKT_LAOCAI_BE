@@ -58,7 +58,7 @@ const config = {
     'JWT_REFRESH_SECRET',
     'default-refresh-secret-change-in-production'
   ),
-  JWT_ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE || '15m',
+  JWT_ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE || '1d',
   JWT_REFRESH_EXPIRE: process.env.JWT_REFRESH_EXPIRE || '7d',
 
   // ========================================

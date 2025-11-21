@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const AssignmentController_1 = __importDefault(require("../../controllers/AssignmentController"));
+const assignmentValidation_1 = require("../validations/assignmentValidation");
+const authorize_1 = require("../../middlewares/authorize");
+const uploadFile_1 = require("../../middlewares/uploadFile");
+const router = express_1.default.Router();
+router.post("/", (0, authorize_1.authorize)("teacher", "admin"), uploadFile_1.uploadFile.array("attachments", 10), assignmentValidation_1.createAssignmentValidation, AssignmentController_1.default.createAssignment);
+router.get("/", (0, authorize_1.authorize)("teacher", "admin", "student"), AssignmentController_1.default.getAllAssignments);
+router.get("/class", (0, authorize_1.authorize)("teacher", "admin", "student"), assignmentValidation_1.classIdQueryValidation, AssignmentController_1.default.getAssignmentsByClass);
+router.get("/subject", (0, authorize_1.authorize)("teacher", "admin", "student"), assignmentValidation_1.subjectIdQueryValidation, AssignmentController_1.default.getAssignmentsBySubject);
+router.get("/upcoming", (0, authorize_1.authorize)("teacher", "admin", "student"), assignmentValidation_1.classIdQueryValidation, AssignmentController_1.default.getUpcomingAssignments);
+router.get("/past-due", (0, authorize_1.authorize)("teacher", "admin", "student"), assignmentValidation_1.classIdQueryValidation, AssignmentController_1.default.getPastDueAssignments);
+router.get("/:assignmentId", (0, authorize_1.authorize)("teacher", "admin", "student"), assignmentValidation_1.assignmentIdValidation, AssignmentController_1.default.getAssignmentById);
+router.get("/:assignmentId/statistics", (0, authorize_1.authorize)("teacher", "admin"), assignmentValidation_1.assignmentIdValidation, AssignmentController_1.default.getAssignmentStatistics);
+router.put("/:assignmentId", (0, authorize_1.authorize)("teacher", "admin"), assignmentValidation_1.assignmentIdValidation, assignmentValidation_1.updateAssignmentValidation, AssignmentController_1.default.updateAssignment);
+router.delete("/:assignmentId", (0, authorize_1.authorize)("teacher", "admin"), assignmentValidation_1.assignmentIdValidation, AssignmentController_1.default.deleteAssignment);
+exports.default = router;

@@ -8,6 +8,7 @@ const cors_1 = __importDefault(require("cors"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const compression_1 = __importDefault(require("compression"));
 const helmet_1 = __importDefault(require("helmet"));
+const path_1 = __importDefault(require("path"));
 const _1 = __importDefault(require("."));
 const express_rate_limit_1 = __importDefault(require("../helpers/express_rate_limit"));
 const winston_1 = require("../helpers/winston");
@@ -36,6 +37,7 @@ const configApp = (app) => {
     }));
     app.use((0, helmet_1.default)());
     app.use(express_rate_limit_1.default);
+    app.use('/upload', express_1.default.static(path_1.default.join(__dirname, '../upload')));
     app.use((req, res, next) => {
         winston_1.logger.info(`${req.method} ${req.originalUrl} - ${req.ip}`);
         next();
