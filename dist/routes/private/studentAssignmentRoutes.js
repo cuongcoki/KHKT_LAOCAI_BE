@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const StudentAssignmentController_1 = __importDefault(require("../../controllers/StudentAssignmentController"));
+const studentAssignmentValidation_1 = require("../validations/studentAssignmentValidation");
+const authorize_1 = require("../../middlewares/authorize");
+const router = express_1.default.Router();
+router.post("/", (0, authorize_1.authorize)("teacher", "admin"), studentAssignmentValidation_1.createStudentAssignmentValidation, StudentAssignmentController_1.default.createStudentAssignment);
+router.get("/", (0, authorize_1.authorize)("teacher", "admin"), StudentAssignmentController_1.default.getAllStudentAssignments);
+router.get("/my-assignments", (0, authorize_1.authorize)("student"), StudentAssignmentController_1.default.getMyAssignments);
+router.get("/my-unsubmitted", (0, authorize_1.authorize)("student"), StudentAssignmentController_1.default.getMyUnsubmitted);
+router.get("/graded-by-me", (0, authorize_1.authorize)("teacher"), StudentAssignmentController_1.default.getGradedByTeacher);
+router.get("/submissions", (0, authorize_1.authorize)("teacher", "admin"), studentAssignmentValidation_1.assignmentIdQueryValidation, StudentAssignmentController_1.default.getSubmissionsByAssignment);
+router.get("/student/:studentId", (0, authorize_1.authorize)("teacher", "admin"), studentAssignmentValidation_1.studentIdValidation, StudentAssignmentController_1.default.getAssignmentsByStudent);
+router.get("/student/:studentId/unsubmitted", (0, authorize_1.authorize)("teacher", "admin"), studentAssignmentValidation_1.studentIdValidation, StudentAssignmentController_1.default.getUnsubmittedByStudent);
+router.get("/:studentAssignmentId", (0, authorize_1.authorize)("teacher", "admin", "student"), studentAssignmentValidation_1.studentAssignmentIdValidation, StudentAssignmentController_1.default.getStudentAssignmentById);
+router.post("/:studentAssignmentId/submit", (0, authorize_1.authorize)("student"), studentAssignmentValidation_1.studentAssignmentIdValidation, studentAssignmentValidation_1.submitAssignmentValidation, StudentAssignmentController_1.default.submitAssignment);
+router.post("/:studentAssignmentId/grade", (0, authorize_1.authorize)("teacher", "admin"), studentAssignmentValidation_1.studentAssignmentIdValidation, studentAssignmentValidation_1.gradeAssignmentValidation, StudentAssignmentController_1.default.gradeAssignment);
+router.put("/:studentAssignmentId", (0, authorize_1.authorize)("teacher", "admin"), studentAssignmentValidation_1.studentAssignmentIdValidation, studentAssignmentValidation_1.updateStudentAssignmentValidation, StudentAssignmentController_1.default.updateStudentAssignment);
+router.delete("/:studentAssignmentId", (0, authorize_1.authorize)("teacher", "admin"), studentAssignmentValidation_1.studentAssignmentIdValidation, StudentAssignmentController_1.default.deleteStudentAssignment);
+exports.default = router;

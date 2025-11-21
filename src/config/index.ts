@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 // Load biến môi trường từ file .env
 dotenv.config();
 
+
 /**
  * Cấu hình toàn bộ ứng dụng
  */
@@ -29,7 +30,11 @@ const config = {
     'http://localhost:3000',
     'http://localhost:5173',
     'http://localhost:5174',
+    'http://14.225.211.7:8333'
+
   ],
+
+  HOST: process.env.HOST  || '0.0.0.0',
 
   // ========================================
   // LOGGING CONFIG
@@ -53,7 +58,7 @@ const config = {
     'JWT_REFRESH_SECRET',
     'default-refresh-secret-change-in-production'
   ),
-  JWT_ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE || '15m',
+  JWT_ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE || '1d',
   JWT_REFRESH_EXPIRE: process.env.JWT_REFRESH_EXPIRE || '7d',
 
   // ========================================

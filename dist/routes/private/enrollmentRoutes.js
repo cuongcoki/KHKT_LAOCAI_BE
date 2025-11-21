@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const enrollmentController_1 = __importDefault(require("../../controllers/enrollmentController"));
+const authorize_1 = require("../../middlewares/authorize");
+const enrollmentValidation_1 = require("../../routes/validations/enrollmentValidation");
+const router = express_1.default.Router();
+router.post('/', (0, authorize_1.authorize)('student', 'teacher', 'admin'), enrollmentValidation_1.createEnrollmentValidation, enrollmentController_1.default.createEnrollment);
+router.put('/:enrollmentId', (0, authorize_1.authorize)('teacher', 'admin'), enrollmentValidation_1.updateEnrollmentValidation, enrollmentController_1.default.updateEnrollment);
+router.get('/', (0, authorize_1.authorize)('teacher', 'admin'), enrollmentController_1.default.getAllEnrollments);
+router.get('/:enrollmentId', enrollmentController_1.default.getEnrollmentById);
+router.get('/student/:studentId', enrollmentController_1.default.getEnrollmentsByStudent);
+router.get('/class/:classId', (0, authorize_1.authorize)('teacher', 'admin'), enrollmentController_1.default.getEnrollmentsByClass);
+router.post('/:enrollmentId/drop', (0, authorize_1.authorize)('student', 'teacher', 'admin'), enrollmentController_1.default.dropEnrollment);
+router.post('/:enrollmentId/complete', (0, authorize_1.authorize)('teacher', 'admin'), enrollmentController_1.default.completeEnrollment);
+router.put('/:enrollmentId/grade', (0, authorize_1.authorize)('teacher', 'admin'), enrollmentValidation_1.updateGradeValidation, enrollmentController_1.default.updateGrade);
+router.delete('/:enrollmentId', (0, authorize_1.authorize)('admin'), enrollmentController_1.default.deleteEnrollment);
+exports.default = router;

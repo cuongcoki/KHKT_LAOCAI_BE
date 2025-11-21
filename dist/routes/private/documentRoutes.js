@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const documentController_1 = __importDefault(require("../../controllers/documentController"));
+const authorize_1 = require("../../middlewares/authorize");
+const upload_1 = require("../../middlewares/upload");
+const documentValidation_1 = require("../validations/documentValidation");
+const router = express_1.default.Router();
+router.post('/', (0, authorize_1.authorize)('teacher', 'admin'), upload_1.uploadDocument.single('file'), documentValidation_1.createDocumentValidation, documentController_1.default.createDocument);
+router.put('/:documentId', (0, authorize_1.authorize)('teacher', 'admin'), documentValidation_1.updateDocumentValidation, documentController_1.default.updateDocument);
+router.get('/', documentController_1.default.getAllDocuments);
+router.get('/:documentId', documentController_1.default.getDocumentById);
+router.get('/subject/:subjectId', documentController_1.default.getDocumentsBySubject);
+router.get('/teacher/:teacherId', documentController_1.default.getDocumentsByTeacher);
+router.post('/:documentId/download', documentController_1.default.downloadDocument);
+router.delete('/:documentId', (0, authorize_1.authorize)('teacher', 'admin'), documentController_1.default.deleteDocument);
+exports.default = router;
