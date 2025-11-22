@@ -109,6 +109,21 @@ class StudentController {
     }
   }
 
+async getAllStudents1(req: Request, res: Response, next: NextFunction) {
+  try {
+    const students = await studentService.getAllStudents1();
+
+    res.json({
+      success: true,
+      message: "Lấy danh sách học sinh thành công",
+      data: students,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
   /**
    * Search students by class
    */
