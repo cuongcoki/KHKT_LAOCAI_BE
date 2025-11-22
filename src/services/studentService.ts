@@ -152,6 +152,18 @@ class StudentService {
     };
   }
 
+   async getAllStudents1() {
+  const students = await Student.find()
+    .populate("user_id", "username email full_name avatar")
+    .sort({ created_at: -1 });
+
+  return {
+    students,
+    total: students.length,
+  };
+}
+
+
   /**
    * Search students by class
    */
