@@ -97,6 +97,17 @@ class StudentService {
             };
         });
     }
+    getAllStudents1() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const students = yield Student_1.Student.find()
+                .populate("user_id", "username email full_name avatar")
+                .sort({ created_at: -1 });
+            return {
+                students,
+                total: students.length,
+            };
+        });
+    }
     searchByClass(className_1) {
         return __awaiter(this, arguments, void 0, function* (className, page = 1, limit = 20) {
             const skip = (page - 1) * limit;
