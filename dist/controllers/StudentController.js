@@ -102,6 +102,21 @@ class StudentController {
             }
         });
     }
+    getAllStudents1(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const students = yield studentService_1.default.getAllStudents1();
+                res.json({
+                    success: true,
+                    message: "Lấy danh sách học sinh thành công",
+                    data: students,
+                });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
     searchByClass(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
