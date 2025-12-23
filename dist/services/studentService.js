@@ -100,7 +100,7 @@ class StudentService {
     getAllStudents1() {
         return __awaiter(this, void 0, void 0, function* () {
             const students = yield Student_1.Student.find()
-                .populate("user_id", "username email full_name avatar")
+                .populate("user_id", "username email role full_name avatar")
                 .sort({ created_at: -1 });
             return {
                 students,
