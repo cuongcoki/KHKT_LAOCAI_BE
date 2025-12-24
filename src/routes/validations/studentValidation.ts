@@ -20,8 +20,8 @@ export const createStudentValidation = [
     .trim()
     .notEmpty()
     .withMessage("Lớp hiện tại là bắt buộc")
-    .matches(/^(10|11|12)[A-Z][0-9]{1,2}$/)
-    .withMessage("Lớp phải có định dạng: Khối + Chữ cái + Số (VD: 10A1)"),
+    .matches(/^(10|11|12)\s+(TOÁN|ANH|VĂN|TIN|LÍ|HÓA|SINH|SỬ|ĐỊA)(\s+[A-Z])?(\s+TIN)?$/)
+    .withMessage("Lớp phải có định dạng: Khối + Tên môn + Phân ban (VD: 10 TOÁN A, 11 ANH)"),
 
   body("school_name")
     .optional()
